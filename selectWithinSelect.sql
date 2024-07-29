@@ -27,3 +27,18 @@ SELECT name, population
 FROM world
 WHERE population > (SELECT population 
 FROM world WHERE name = 'United Kingdom') AND population < (SELECT population FROM world WHERE name = 'Germany');
+
+--Germany (population 80 million) has the largest population of the countries in Europe. Austria (population 8.5 million) has 11% of the population of Germany
+--Very difficult
+SELECT name, CONCAT(ROUND(100*population/(SELECT population FROM world WHERE name = 'Germany')), '%') AS percentage
+FROM world
+WHERE continent = 'Europe'
+
+--Subqueries can be in both select, from and where statements
+--When used in the from, it's esstientally grabbing from the table it has just created
+
+
+--Which countries have a GDP greater than every country in Europe? [Give the name only.] (Some countries may have NULL gdp values)
+SELECT name 
+FROM world
+WHERE GDP > ALL(SELECT GDP FROM world WHERE continent = 'Europe' AND GDP > 0)
